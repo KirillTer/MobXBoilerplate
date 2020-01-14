@@ -1,30 +1,43 @@
-import React, {useEffect, useContext} from "react";
+import React, {useEffect} from "react";
 import { observer } from 'mobx-react-lite'
-import { PlayersStoreContext } from "../../store/players.store";
-import { GamesStoreContext } from "../../store/games.store";
+import * as R from 'ramda'
+import { history } from "../../index";
+import { mainContainer } from "../../models/inversify.config";
+import { TYPES } from "../../models/types";
+import { TeamsStoreModel } from "../../models/teams.model";
+import { PlayersStoreModel } from "../../models/players.model";
+import { GamesStoreModel } from "../../models/games.model";
 import { List, Avatar } from 'antd';
 
-const Team = observer(({match}: {match: {params: {id: string}}}) => {
+const teamsStore = mainContainer.get<TeamsStoreModel>(TYPES.TeamsStoreModel);
+const playersStore = mainContainer.get<PlayersStoreModel>(TYPES.PlayersStoreModel);
+const gamesStore = mainContainer.get<GamesStoreModel>(TYPES.GamesStoreModel);
+
+const TeamComponent = observer(({match, ...props}: any) => {
   const id = match.params.id
-  const playersStore = useContext(PlayersStoreContext)
-  const gamesStore = useContext(GamesStoreContext)
 
   useEffect(() => {
+    teamsStore.getTeams()
     playersStore.getPlayers(id);
     gamesStore.getGames(id);
-  }, [playersStore, gamesStore, id])
+  }, [id])
+
+  const playerToogle = (id: string) => {
+    history.push(`/player/${id}`)
+  }
 
   return (
     <div style={{display: 'flex'}}>
+      {console.log('Team component', playersStore, gamesStore, props)}
       <List
         header={<div>Players</div>}
         itemLayout="horizontal"
         dataSource={playersStore.players}
         renderItem={(item: any) => (
-          <List.Item>
+          <List.Item onClick={() => playerToogle(item.id)}>
             <List.Item.Meta
               avatar={<Avatar src={item.flag_url} />}
-              title={<a href="https://ant.design">{item.name}</a>}
+              title={item.name}
               description={`nationality - ${item.nationality}`}
             />
           </List.Item>
@@ -38,7 +51,9 @@ const Team = observer(({match}: {match: {params: {id: string}}}) => {
         renderItem={(item: any) => (
           <List.Item>
             <List.Item.Meta
-              title={<a href="https://ant.design">{item.team_one_id} - {item.team_two_id}</a>}
+              title={<div>
+                {R.find(R.propEq('id', item.team_one_id))(teamsStore.teams).name + ' - ' + R.find(R.propEq('id', item.team_two_id))(teamsStore.teams).name}
+              </div>}
               description={`${item.team_one_goals} - ${item.team_two_goals}`}
             />
           </List.Item>
@@ -48,4 +63,4 @@ const Team = observer(({match}: {match: {params: {id: string}}}) => {
   );
 });
 
-export default Team;
+export default TeamComponent;

@@ -1,22 +1,17 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState} from "react";
 import './layout.scss';
 import { observer } from 'mobx-react-lite'
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Layout, Menu, Icon } from "antd";
-import { TeamsStoreContext } from "../../store/teams.store";
 
 import Home from '../home/home'
-import Team from '../team/team'
+import TeamComponent from '../team/team'
+import Player from '../player/player'
 
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = observer(() => {
   const [collapsed, setCollapsed] = useState(true)
-  const teamsStore = useContext(TeamsStoreContext)
-
-  useEffect(() => {
-    teamsStore.getTeams()
-  }, [teamsStore])
 
   return (
     <Layout>
@@ -50,7 +45,7 @@ const MainLayout = observer(() => {
             margin: '24px 16px',
             padding: 24,
             background: '#fff',
-            height: 'calc(100vh - 112px)',
+            minHeight: 'calc(100vh - 112px)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start'
@@ -61,7 +56,8 @@ const MainLayout = observer(() => {
                 <Redirect to="/home"/>
             )}/>
             <Route exact path="/home" component={Home} />
-            <Route path="/team/:id" component={Team} />
+            <Route path="/team/:id" component={TeamComponent} />
+            <Route path="/player/:id" component={Player} />
           </Switch>
         </Content>
       </Layout>

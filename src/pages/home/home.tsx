@@ -1,16 +1,19 @@
-import React, {useContext} from "react";
+import React, {useEffect} from "react";
 import { observer } from 'mobx-react-lite'
 import { Card } from "antd";
-
-import { TeamsStoreContext } from "../../store/teams.store";
-import { Teams } from '../../models/teams.model'
 import { history } from "../../index";
+import { mainContainer } from "../../models/inversify.config";
+import { TYPES } from "../../models/types";
+import { Team, TeamsStoreModel } from "../../models/teams.model";
 
 const { Meta } = Card;
+const teamsStore = mainContainer.get<TeamsStoreModel>(TYPES.TeamsStoreModel);
 
 const Home = observer(() => {
 
-  const teamsStore = useContext(TeamsStoreContext)
+  useEffect(() => {
+    teamsStore.getTeams()
+  },[])
 
   const cardToogle = (id: string) => {
     history.push(`/team/${id}`)
@@ -18,7 +21,7 @@ const Home = observer(() => {
 
   return (
     <>
-      {teamsStore.teams.map((team: Teams) => {
+      {teamsStore.teams.map((team: Team) => {
         return <Card
           key={team.id}
           hoverable
