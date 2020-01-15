@@ -1,4 +1,4 @@
-import { observable, action, autorun } from 'mobx'
+import { observable, action } from 'mobx'
 import { injectable } from "inversify";
 import { fetchPlayersApi } from '../api'
 import { History, Players, PlayersStoreModel } from '../models/players.model'
@@ -21,9 +21,4 @@ class PlayersStore implements PlayersStoreModel {
   }
 }
 
-const playersStore = new PlayersStore()
 export { PlayersStore }
-
-autorun(() => {
-  console.log('Players store - ', playersStore.players)
-})

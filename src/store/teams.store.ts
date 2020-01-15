@@ -1,4 +1,4 @@
-import { observable, action, autorun, computed } from 'mobx'
+import { observable, action } from 'mobx'
 import * as R from 'ramda'
 import { injectable } from "inversify";
 import { fetchMainApi } from '../api'
@@ -17,15 +17,10 @@ class TeamsStore implements TeamsStoreModel {
     }
   }
 
-  @computed
   public getNameById(id: string): string {
-    return R.find(R.propEq('id', id))(this.teams).name
+    console.log('teams Store - ', id, this.teams)
+    return this.teams.length ? R.find(R.propEq('id', id))(this.teams).name : []
   }
 }
 
-const teamsStore = new TeamsStore()
 export { TeamsStore }
-
-autorun(() => {
-  console.log('Teams store - ', teamsStore.teams)
-})

@@ -12,5 +12,5 @@ export interface Teams extends Array<Team> {
 export interface TeamsStoreModel {
   teams: Teams;
   getTeams(): void;
-  getNameById(id: string): string;
+  getNameById(id: string): any;
 }

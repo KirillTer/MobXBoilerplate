@@ -1,23 +1,23 @@
 import React, {useEffect} from "react";
 import { observer } from 'mobx-react-lite'
-import * as R from 'ramda'
+// import * as R from 'ramda'
 import { history } from "../../index";
 import { mainContainer } from "../../models/inversify.config";
 import { TYPES } from "../../models/types";
-import { TeamsStoreModel } from "../../models/teams.model";
+// import { TeamsStoreModel } from "../../models/teams.model";
 import { PlayersStoreModel } from "../../models/players.model";
 import { GamesStoreModel } from "../../models/games.model";
 import { List, Avatar } from 'antd';
 
-const teamsStore = mainContainer.get<TeamsStoreModel>(TYPES.TeamsStoreModel);
+// const teamsStore = mainContainer.get<TeamsStoreModel>(TYPES.TeamsStoreModel);
 const playersStore = mainContainer.get<PlayersStoreModel>(TYPES.PlayersStoreModel);
 const gamesStore = mainContainer.get<GamesStoreModel>(TYPES.GamesStoreModel);
 
-const TeamComponent = observer(({match, ...props}: any) => {
+const TeamComponent = observer(({match}: {match: {params: {id: string}}}) => {
   const id = match.params.id
 
   useEffect(() => {
-    teamsStore.getTeams()
+    // teamsStore.getTeams()
     playersStore.getPlayers(id);
     gamesStore.getGames(id);
   }, [id])
@@ -28,7 +28,7 @@ const TeamComponent = observer(({match, ...props}: any) => {
 
   return (
     <div style={{display: 'flex'}}>
-      {console.log('Team component', playersStore, gamesStore, props)}
+      {console.log('TEAMS COMPONENT Players - ', playersStore.players, 'Games - ', gamesStore.games)}
       <List
         header={<div>Players</div>}
         itemLayout="horizontal"
@@ -52,7 +52,8 @@ const TeamComponent = observer(({match, ...props}: any) => {
           <List.Item>
             <List.Item.Meta
               title={<div>
-                {R.find(R.propEq('id', item.team_one_id))(teamsStore.teams).name + ' - ' + R.find(R.propEq('id', item.team_two_id))(teamsStore.teams).name}
+                {gamesStore.getTeamNameById(item.team_one_id) + ' -- ' + gamesStore.getTeamNameById(item.team_two_id)}
+                {/* {R.find(R.propEq('id', item.team_one_id))(teamsStore.teams).name + ' - ' + R.find(R.propEq('id', item.team_two_id))(teamsStore.teams).name} */}
               </div>}
               description={`${item.team_one_goals} - ${item.team_two_goals}`}
             />

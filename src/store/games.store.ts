@@ -1,21 +1,15 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action } from 'mobx'
 import "reflect-metadata";
-import { injectable, lazyInject } from "inversify";
+import { injectable, inject } from "inversify";
 import { fetchGamesApi } from '../api'
 import { Games, GamesStoreModel } from '../models/games.model'
-import { TeamsStore } from "./teams.store";
+import { TeamsStoreModel } from "../models/teams.model";
 import { TYPES } from "../models/types";
 
 @injectable()
 class GamesStore implements GamesStoreModel {
 
-  private _teams: TeamsStore
-
-  public constructor(
-    @lazyInject(TYPES.TeamsStoreModel) teams: TeamsStore
-  ) {
-      this._teams = teams;
-  }
+  @inject(TYPES.TeamsStoreModel) private _teams!: TeamsStoreModel;
 
   @observable games: Games = [];
 
@@ -29,7 +23,7 @@ class GamesStore implements GamesStoreModel {
     }
   }
 
-  @computed
+  @action
   public getTeamNameById(id: string): string {
     return this._teams.getNameById(id)
   }
