@@ -26,9 +26,13 @@ const TeamComponent = observer(({match}: {match: {params: {id: string}}}) => {
     history.push(`/player/${id}`)
   }
 
+  if (!gamesStore.games || !gamesStore.games.length) {
+    return <h1>Test</h1>;
+  }
+
   return (
     <div style={{display: 'flex'}}>
-      {console.log('TEAMS COMPONENT Players - ', playersStore.players, 'Games - ', gamesStore.games)}
+      {console.log('TEAMS COMPONENT Players- ', playersStore.players, 'Games - ',gamesStore.games)}
       <List
         header={<div>Players</div>}
         itemLayout="horizontal"

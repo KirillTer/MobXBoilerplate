@@ -3,8 +3,8 @@ import "reflect-metadata";
 import { injectable, inject } from "inversify";
 import { fetchGamesApi } from '../api'
 import { Games, GamesStoreModel } from '../models/games.model'
-import { TeamsStoreModel } from "../models/teams.model";
 import { TYPES } from "../models/types";
+import { TeamsStoreModel } from '../models/teams.model';
 
 @injectable()
 class GamesStore implements GamesStoreModel {
@@ -24,9 +24,7 @@ class GamesStore implements GamesStoreModel {
   }
 
   @action
-  public getTeamNameById(id: string): string {
-    return this._teams.getNameById(id)
-  }
+  public getTeamNameById(id: string) { return this._teams.getNameById(id)}
 }
 
 export {GamesStore}

@@ -14,12 +14,13 @@ const Player = observer(({match}: {match: {params: {id: string}}}) => {
     playersStore.getPlayers("a8986737-030e-4c2d-90c9-8313c18e483b");
   }, [])
 
-  if (!playersStore.players || !playersStore.players.length) {
+  if (!playersStore.players.length) {
     return <h1>Test</h1>;
   }
 
   return (
     <div style={{display: 'flex'}}>
+      {console.log('PLAYERS COMPONENT - ', playersStore.players)}
       <List
         header={<div>History</div>}
         itemLayout="horizontal"

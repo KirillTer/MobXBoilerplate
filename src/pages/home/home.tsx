@@ -21,7 +21,7 @@ const Home = observer(() => {
 
   return (
     <>
-      {console.log('HOME COMPONENT - ', teamsStore.teams)}
+      {console.log('HOME COMPONENT - Teams -', teamsStore.teams)}
       {teamsStore.teams.map((team: Team) => {
         return <Card
           key={team.id}

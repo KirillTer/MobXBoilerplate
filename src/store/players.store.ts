@@ -16,7 +16,7 @@ class PlayersStore implements PlayersStoreModel {
     }
   }
  
-  getPlayersHistory(userId: string): History {
+  public getPlayersHistory(userId: string): History {
     return this.players.find(({id}) => id === userId)?.history || [];
   }
 }

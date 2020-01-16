@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx'
 import * as R from 'ramda'
 import { injectable } from "inversify";
+import "reflect-metadata";
 import { fetchMainApi } from '../api'
 import { Teams, TeamsStoreModel } from '../models/teams.model'
 
@@ -18,7 +19,7 @@ class TeamsStore implements TeamsStoreModel {
   }
 
   public getNameById(id: string): string {
-    console.log('teams Store - ', id, this.teams)
+    console.log('Teams Store -', id, this.teams)
     return this.teams.length ? R.find(R.propEq('id', id))(this.teams).name : []
   }
 }
